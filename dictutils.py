@@ -16,29 +16,20 @@ import codecs
 
 
 #----------------------------------------------------------------------
-# python3 compatible
-#----------------------------------------------------------------------
-if sys.version_info[0] >= 3:
-	unicode = str
-	long = int
-	xrange = range
-
-
-#----------------------------------------------------------------------
 # Word Generator
 #----------------------------------------------------------------------
 class Generator (object):
 
 	def __init__ (self):
 		terms = {}
-		terms['zk'] = u'中'
-		terms['gk'] = u'高'
-		terms['ky'] = u'研'
-		terms['cet4'] = u'四'
-		terms['cet6'] = u'六'
-		terms['toefl'] = u'托'
-		terms['ielts'] = u'雅'
-		terms['gre'] = u'宝'
+		terms['zk'] = '中'
+		terms['gk'] = '高'
+		terms['ky'] = '研'
+		terms['cet4'] = '四'
+		terms['cet6'] = '六'
+		terms['toefl'] = '托'
+		terms['ielts'] = '雅'
+		terms['gre'] = '宝'
 		self._terms = terms
 		names = ('zk', 'gk', 'ky', 'cet4', 'cet6', 'toefl', 'ielts', 'gre')
 		self._term_name = names
@@ -53,13 +44,13 @@ class Generator (object):
 				continue
 			text += self._terms[term]
 		frq = data.get('frq')
-		if isinstance(frq, str) or isinstance(frq, unicode):
+		if isinstance(frq, str):
 			if frq in ('', '0'):
 				frq = None
 		if not frq:
 			frq = '-'
 		bnc = data.get('bnc')
-		if isinstance(bnc, str) or isinstance(bnc, unicode):
+		if isinstance(bnc, str):
 			if bnc in ('', '0'):
 				bnc = None
 		if not bnc:
@@ -71,7 +62,7 @@ class Generator (object):
 	def word_level (self, data):
 		head = ''
 		collins = data.get('collins', '')
-		if isinstance(collins, str) or isinstance(collins, unicode):
+		if isinstance(collins, str):
 			if collins in ('', '0'):
 				collins = None
 		if collins:
@@ -95,7 +86,7 @@ class Generator (object):
 			if p:
 				count += 1
 				if p != last:
-					part.append(u'%s'%p)
+					part.append(p)
 					last = p
 		if count < 4:
 			text = ''
@@ -116,16 +107,16 @@ class Generator (object):
 					t = exchange['1']
 					p = []
 					if 'p' in t and 'd' in t:
-						derive = u'过去式和过去分词'
+						derive = '过去式和过去分词'
 					elif 's' in t and '3' in t:
-						derive = u'第三人称单数'
+						derive = '第三人称单数'
 					else:
 						for x in ('i', 'p', 'd', '3', 's', 'r', 't'):
 							if x in t:
 								derive = stardict.tools._exchanges[x]
 								break
 					if derive:
-						origin = data['word'] + u' 是 ' + origin + u' 的' + derive
+						origin = data['word'] + ' 是 ' + origin + u' 的' + derive
 		better = ''
 		if ('r' in exchange) and ('t' in exchange):
 			better = exchange['r'] + ', ' + exchange['t']
@@ -133,19 +124,19 @@ class Generator (object):
 		# if text and (not exchange.get('1', '') in ('p', 'd', 'i', '3', 'pd', 'dp')):
 		if text:
 			if style == 0:
-				lines.append(u'[时态] ' + text)
+				lines.append('[时态] ' + text)
 			else:
-				lines.append(u'时态: ' + text)
+				lines.append('时态: ' + text)
 		if better and (not exchange.get('1', '') in ('r', 't')):
 			if style == 0:
-				lines.append(u'[级别] ' + better)
+				lines.append('[级别] ' + better)
 			else:
-				lines.append(u'级别: ' + better)
+				lines.append('级别: ' + better)
 		if origin:
 			if style == 0:
-				lines.append(u'[原型] ' + origin)
+				lines.append('[原型] ' + origin)
 			else:
-				lines.append(u'原型: ' + origin)
+				lines.append('原型: ' + origin)
 		return '\n'.join(lines)
 
 	def word_pos (self, data):
@@ -240,19 +231,19 @@ class Generator (object):
 					if phonetic:
 						if not style:
 							fp.write('<font color=dodgerblue>')
-							fp.write(text2html(u'[%s]'%phonetic))
+							fp.write(text2html('[%s]'%phonetic))
 							fp.write('</font>')
 						else:
-							fp.write('`3`' + text2html(u'[%s]'%phonetic))
+							fp.write('`3`' + text2html('[%s]'%phonetic))
 					if head:
 						if phonetic:
 							fp.write(' ')
 						if not style:
 							fp.write('<font color=gray>')
-							fp.write(text2html(u'-%s'%head))
+							fp.write(text2html('-%s'%head))
 							fp.write('</font>')
 						else:
-							fp.write('`4`' + text2html(u'-%s'%head))
+							fp.write('`4`' + text2html('-%s'%head))
 					if not style:
 						fp.write('</br></br>\r\n')
 					else:
@@ -272,7 +263,7 @@ class Generator (object):
 					fp.write(text2html(exchange))
 					fp.write('</font>\r\n')
 				else:
-					fp.write(u'`2``4`' + text2html(exchange) + '`2`\r\n')
+					fp.write('`2``4`' + text2html(exchange) + '`2`\r\n')
 			if tag:
 				if not style:
 					fp.write('</br><font color=gray>')
@@ -338,11 +329,11 @@ class Generator (object):
 			if head:
 				outline('  <span class="hnt">-</span>')
 			if data.get('oxford'):
-				t = u'Oxford 3000 Keywords'
-				p = u'<span>\u203B</span>'
+				t = 'Oxford 3000 Keywords'
+				p = '<span>\u203B</span>'
 				outline('  <span class="oxf" title="%s">%s</span>'%(t, p))
 			collins = data.get('collins', '0')
-			if isinstance(collins, str) or isinstance(collins, unicode):
+			if isinstance(collins, str):
 				if collins in ('', '0'):
 					collins = 0
 				else:
@@ -350,7 +341,7 @@ class Generator (object):
 			if collins:
 				title = 'Collins Stars'
 				out('  <span class="col" title="%s">'%title)
-				out(u'\u2605' * int(collins))
+				out('\u2605' * int(collins))
 				outline('</span>')
 			outline('</div>')
 
@@ -359,13 +350,13 @@ class Generator (object):
 		for line in translation.split('\n'):
 			line = line.rstrip('\r\n')
 			outline('  <div class="dcb">')
-			if line[:4] == u'[网络]':
+			if line[:4] == '[网络]':
 				text = text2html(line[4:].lstrip('\t '))
-				outline(u'    <span class="dnt">[网络]</span>')
-				outline(u'    <span class="dne">%s</span>'%text)
+				outline('    <span class="dnt">[网络]</span>')
+				outline('    <span class="dne">%s</span>'%text)
 			elif line[:1] == '>':
 				text = text2html(line)
-				outline(u'    <span class="deq">%s</span>'%text)
+				outline('    <span class="deq">%s</span>'%text)
 			else:
 				pos, text = self._split_pos(line)
 				if pos:
@@ -381,22 +372,22 @@ class Generator (object):
 			outline('<div class="gfm">')
 			for line in exchange.split('\n'):
 				line = line.rstrip('\r\n\t ')
-				if line.startswith(u'[时态]'):
+				if line.startswith('[时态]'):
 					text = text2html(line[4:].lstrip(' '))
 					outline('  <div class="fmb">')
-					outline('    <span class="fnm">%s</span>'%u'时态:')
+					outline('    <span class="fnm">%s</span>'%'时态:')
 					outline('    <span class="frm">%s</span>'%text)
 					outline('  </div>')
-				elif line.startswith(u'[级别]'):
+				elif line.startswith('[级别]'):
 					text = text2html(line[4:].lstrip(' '))
 					outline('  <div class="qmb">')
-					outline('    <span class="qnm">%s</span>'%u'级别:')
+					outline('    <span class="qnm">%s</span>'%'级别:')
 					outline('    <span class="qrm">%s</span>'%text)
 					outline('  </div>')
-				elif line.startswith(u'[原型]'):
+				elif line.startswith('[原型]'):
 					text = text2html(line[4:].lstrip(' '))
 					outline('  <div class="orb">')
-					outline('    <span class="onm">%s</span>'%u'原型:')
+					outline('    <span class="onm">%s</span>'%'原型:')
 					outline('    <span class="orm">%s</span>'%text)
 					outline('  </div>')
 			outline('</div>')
@@ -408,7 +399,7 @@ class Generator (object):
 			frq = data.get('frq')
 			bnc = data.get('bnc')
 			if frq:
-				title = u'COCA: %s'%frq
+				title = 'COCA: %s'%frq
 			if bnc:
 				if title:
 					title += ', '
@@ -618,12 +609,12 @@ class Resemble (object):
 		return len(self._resembles)
 
 	def __getitem__ (self, key):
-		if isinstance(key, int) or isinstance(key, long):
+		if isinstance(key, int):
 			return self._resembles[key]
 		return self._words[key]
 
 	def __contains__ (self, key):
-		if isinstance(key, int) or isinstance(key, long):
+		if isinstance(key, int):
 			if key < 0 or key >= len(self._resembles):
 				return False
 		elif not key in self._words:
@@ -672,7 +663,7 @@ class Resemble (object):
 						lines.append(text2html(line) + '</br>')
 					elif style == 1:
 						pos = -1
-						for i in xrange(len(line)):
+						for i in range(len(line)):
 							if ord(line[i]) >= 128:
 								pos = i
 								break
@@ -682,7 +673,7 @@ class Resemble (object):
 							en, cn = line[:pos], line[pos:]
 						en = text2html(en.strip('\r\n\t '))
 						cn = text2html(cn.strip('\r\n\t '))
-						line = u'<font color=teal>&nbsp;• </font>'
+						line = '<font color=teal>&nbsp;• </font>'
 						if en:
 							line += '<font color="#008080">%s</font> &nbsp;'%en
 						if cn:
@@ -709,14 +700,14 @@ class Resemble (object):
 
 	def compile_mdx (self, filename):
 		words = self.compile_map()
-		title = u'有道词语辨析'
+		title = '有道词语辨析'
 		text = time.strftime('%Y-%m-%d %H:%M:%S')
-		desc = u'<font color="red">\n'
-		desc += u'有道词语辨析</br>\n'
-		desc += u'词条数：%d</br>\n'%len(self._words)
-		desc += u'词组数：%d</br>\n'%len(self._resembles)
-		desc += u'作者：skywind</br>\n'
-		desc += u'日期：%s</br>\n'%text
+		desc = '<font color="red">\n'
+		desc += '有道词语辨析</br>\n'
+		desc += '词条数：%d</br>\n'%len(self._words)
+		desc += '词组数：%d</br>\n'%len(self._resembles)
+		desc += '作者：skywind</br>\n'
+		desc += '日期：%s</br>\n'%text
 		desc += '</font>'
 		stardict.tools.export_mdx(words, filename, title, desc)
 		return True
@@ -796,7 +787,7 @@ class Treasure (object):
 			else:
 				text = '-' + head
 		if text:
-			return self.clear_html(u'(%s)'%text)
+			return self.clear_html('(%s)'%text)
 		return None
 
 	def get_exchange (self, data):
@@ -815,14 +806,14 @@ class Treasure (object):
 			if p:
 				count += 1
 				if p != last:
-					part.append(u'%s'%p)
+					part.append('%s'%p)
 					last = p
 		if count == 4:
 			text = ', '.join(part)
-			return self.clear_html(u'时态：' + text)
+			return self.clear_html('时态：' + text)
 		if ('r' in chg) and ('t' in chg):
 			text = ', '.join([chg['r'], chg['t']])
-			return self.clear_html(u'级别：' + text)
+			return self.clear_html('级别：' + text)
 		return None
 
 	def get_syno (self, data, plain = False):
@@ -884,17 +875,17 @@ class Treasure (object):
 			if p1 >= 0:
 				youci = youci[p1 + 5:]
 			if youci:
-				head = u'<span class="head">【优词】　</span> '
+				head = '<span class="head">【优词】　</span> '
 				head = ''
 				output.append(head + youci)
 		xdf = detail.get('xdf')
 		if xdf:
-			head = u'<span class="head">【新东方】　</span>'
+			head = '<span class="head">【新东方】　</span>'
 			head = ''
 			output.append(head + xdf)
 		bzsd = detail.get('bzsd')
 		if bzsd:
-			head = u'<span class="head">【不择手段】　</span>'
+			head = '<span class="head">【不择手段】　</span>'
 			head = ''
 			output.append(head + self.text2html(bzsd))
 		if not output:
@@ -908,12 +899,12 @@ class Treasure (object):
 		output = []
 		resemble = detail.get('resemble')
 		if resemble:
-			head = u'<span class="head">【有道词语辨析】</div><br>\n'
+			head = '<span class="head">【有道词语辨析】</div><br>\n'
 			head = ''
 			output.append(head + resemble)
 		syno = detail.get('syno')
 		if syno:
-			head = u'<span class="head">【有道近义词】</div><br>\n'
+			head = '<span class="head">【有道近义词】</div><br>\n'
 			head = ''
 			output.append(head + self.get_syno(data))
 		if not output:
@@ -953,7 +944,7 @@ class Treasure (object):
 			html.append(text%exchange)
 		proportion = self.get_proportion(data)
 		if proportion:
-			text = u"<div style='font-size:12px;color:gray;text-align:center'>分布：%s</div>"
+			text = "<div style='font-size:12px;color:gray;text-align:center'>分布：%s</div>"
 			html.append(text%proportion)
 		html.append(hr)
 		memo = self.get_memo(data)
@@ -1029,7 +1020,7 @@ if __name__ == '__main__':
 	def test3():
 		if not resemble.load('resemble.txt'):
 			return -1
-		fn = u'd:/Program Files/GoldenDict/content/others/有道词语辨析.mdx'
+		fn = 'd:/Program Files/GoldenDict/content/others/有道词语辨析.mdx'
 		resemble.compile_mdx(fn)
 		return 0
 
@@ -1051,7 +1042,7 @@ if __name__ == '__main__':
 	def test6():
 		db = stardict.open_local('ultimate.db')
 		data = db['sting']
-		data['translation'] += u'\n> hahahah\n[网络] 你好'
+		data['translation'] += '\n> hahahah\n[网络] 你好'
 		import StringIO
 		sio = StringIO.StringIO()
 		generator._generate_html(sio, data)

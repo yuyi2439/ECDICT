@@ -12,14 +12,6 @@ import sys, os, time
 
 # https://www.nodebox.net/code/index.php/Linguistics
 
-#----------------------------------------------------------------------
-# python 2/3 compatible
-#----------------------------------------------------------------------
-if sys.version_info[0] >= 3:
-	long = int
-	xrange = range
-	unicode = str
-
 
 #----------------------------------------------------------------------
 # 词形变换
