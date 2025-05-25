@@ -832,8 +832,7 @@ class DictCsv(object):
 
     def __obj_decode(self, row):
         """对象解码"""
-        if row is None:
-            return None
+        assert row is not None
         obj = {}
         obj['id'] = row[COLUMN_ID]
         obj['sw'] = row[COLUMN_SW]
