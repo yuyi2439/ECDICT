@@ -769,7 +769,7 @@ class DictCsv(object):
         reader = csv.reader(open(filename, encoding=codec))
         rows = []
         index = []
-        words: list[str] = []
+        words = {}
         count = 0
         for row in reader:
             count += 1
@@ -787,7 +787,7 @@ class DictCsv(object):
             if word in words:
                 continue
             row.extend([0, 0, stripword(row[0])])
-            words.append(word)
+            words[word] = 1
             rows.append(row)
             index.append(row)
         self.__rows = rows
